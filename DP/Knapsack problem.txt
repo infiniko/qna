@@ -1,0 +1,31 @@
+
+#include<bits/stdc++.h>
+using namespace std;
+
+class Solution
+{
+    public:
+        int maxUntil(int index, int W, int Wt[], int val[], vector<vector<int>> &dp){
+        
+        if(index==0){
+            return (Wt[0]<=W) ? val[0]:0;
+        }
+        
+        if(dp[index][W]!=-1){
+            return dp[index][W];
+        }
+        
+        int notTaken = 0 + maxUntil(index-1,W,Wt,val,dp);
+        int taken = INT_MIN;
+        if(Wt[index]<=W) taken = val[index] + maxUntil(index-1,W-Wt[index],Wt,val,dp);
+        
+        return dp[index][W] = max(taken,notTaken);
+    }
+    
+    int knapSack(int W, int wt[], int val[], int n) 
+    { 
+       // Your code here
+       vector<vector<int>> dp(n,vector<int>(W+1,-1));
+       return maxUntil(n-1,W,wt,val,dp);
+    }
+};
