@@ -29,3 +29,33 @@ public:
         return answer;
     }
 };
+
+
+// tabulation method now
+
+class Solution {
+public:
+    
+    int coinChange(vector<int>& coins, int amount) {
+        int n = coins.size();
+        vector<vector<int>> dp(n,vector<int>(amount+1,0));
+
+        for(int amt = 0;amt<=amount;amt++){
+            dp[0][amt] = amt%coins[0]==0 ? amt/coins[0] : 1e7;
+        }
+
+        for(int index=1;index<n;index++){
+            for(int amt = 0;amt<=amount;amt++){
+            int notTake = dp[index-1][amt];
+            int take = INT_MAX;
+            if(coins[index]<=amt) take = 1 + dp[index][amt-coins[index]];
+            dp[index][amt] = min(take,notTake);
+            }
+        }
+
+        if(dp[n-1][amount]>=1e7){
+            return -1;
+        }
+        return dp[n-1][amount];
+    }
+};
