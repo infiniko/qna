@@ -31,3 +31,27 @@ public:
         return profitSolver(0,1,2,prices,n,dp);
     }
 };
+
+
+//tabulation with space optimization
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int n = prices.size();
+        vector<vector<int>> ahead(2, vector<int>(3, 0)), curr(2, vector<int>(3, 0));
+        for (int index = n - 1; index >= 0; index--) {
+            for (int buyP = 0; buyP < 2; buyP++) {
+                for (int cap = 1; cap <= 2; cap++) {
+
+                    if (buyP) {
+                        curr[buyP][cap] = max(-prices[index] + ahead[0][cap], ahead[1][cap]);
+                    } else {
+                        curr[buyP][cap] = max(prices[index] + ahead[1][cap - 1], ahead[0][cap]);
+                    }
+                }
+            }
+            ahead = curr;
+        }
+        return ahead[1][2];
+    }
+};
