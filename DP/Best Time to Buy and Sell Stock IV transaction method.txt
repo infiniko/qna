@@ -1,0 +1,51 @@
+// memoization transaction method taking 2*k numbers  to denote buy and sell
+class Solution {
+public:
+    int profitFinder(int ind, int tNo, vector<int>& prices, int n, int k, vector<vector<int>>& dp){
+        
+        if(ind == n || tNo==2*k){
+            return 0;
+        }
+        
+        if(dp[ind][tNo] != -1){
+            return dp[ind][tNo];
+        }
+
+        if(tNo%2==0){
+            return dp[ind][tNo] = max( -prices[ind] + profitFinder(ind+1,tNo+1, prices,n,k,dp), 
+                                        0 + profitFinder(ind+1,tNo, prices,n,k,dp));
+        }
+        else{
+            return dp[ind][tNo] = max( prices[ind] + profitFinder(ind+1,tNo+1, prices,n,k,dp), 
+                                        0 + profitFinder(ind+1,tNo, prices,n,k,dp));
+        }
+    }
+
+    int maxProfit(int k, vector<int>& prices) {
+        int n = prices.size();
+        vector<vector<int>> dp(n, vector<int>(2*k,-1));
+        return profitFinder(0,0,prices,n,k,dp);
+    }
+};
+
+
+//tabulation with space optimization
+class Solution {
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        int n = prices.size();
+        vector<int> ahead(2 * k + 1, 0), curr(2 * k + 1, 0);
+
+        for (int ind = n - 1; ind >= 0; ind--) {
+            for (int tNo = 2 * k - 1; tNo >= 0; tNo--) {
+                if (tNo % 2 == 0) {
+                    curr[tNo] = max(-prices[ind] + ahead[tNo+1], ahead[tNo]);
+                } else {
+                    curr[tNo] = max(prices[ind] + ahead[tNo+1], ahead[tNo]);
+                }
+            }
+            ahead = curr;
+        }
+        return curr[0];
+    }
+};
