@@ -42,3 +42,23 @@ public:
         return dp[0][0];
     }
 };
+
+//another tabulation method with dp[i] represents LIS at i
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        int maxLis = 1;
+        vector<int> dp(n, 1);
+        for (int index = 0; index < n; index++) {
+            for (int prev = 0; prev < index; prev++) {
+                if (nums[index] > nums[prev]) {
+                    dp[index] = max(dp[index], 1 + dp[prev]);
+                }
+            }
+            maxLis = max(maxLis,dp[index]);
+        }
+        return maxLis;
+    }
+};
