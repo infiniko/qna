@@ -1,0 +1,36 @@
+//tabulation is the way
+class Solution {
+  public:
+    vector<int> longestIncreasingSubsequence(int n, vector<int>& arr) {
+        // Code here
+        int maxLis = 1;
+        int maxInd = 0;
+        vector<int> dp(n, 1);
+        vector<int> hash(n, 0);
+        for (int index = 0; index < n; index++) {
+            hash[index] = index;
+            for (int prev = 0; prev < index; prev++) {
+                if (arr[index] > arr[prev]) {
+                    if(dp[index]<1+dp[prev]){
+                        dp[index] = 1 + dp[prev];
+                        hash[index]= prev; 
+                    }
+                }
+            }
+            if(maxLis<dp[index]){
+                maxLis = dp[index];
+                maxInd = index;
+            }
+            
+        }
+        
+        vector<int> res;
+        res.push_back(arr[maxInd]);
+        while(hash[maxInd] != maxInd){
+            maxInd = hash[maxInd];
+            res.push_back(arr[maxInd]);
+        }
+        reverse(res.begin(),res.end());
+        return res;
+    }
+};
