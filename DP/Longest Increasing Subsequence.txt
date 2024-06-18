@@ -1,0 +1,44 @@
+//memoization
+
+class Solution {
+public:
+    int solver(int index, int pindex, vector<int>& nums, int n, vector<vector<int>>& dp){
+
+        if(index==n){
+            return 0;
+        }
+        if(dp[index][pindex+1] != -1){
+            return dp[index][pindex+1];
+        }
+        int len = 0 + solver(index+1, pindex, nums,n,dp);
+        if(pindex == -1 || nums[index] > nums[pindex]){
+            len = max(len, 1 + solver(index+1,index,nums,n,dp));
+        }
+        return dp[index][pindex+1] = len;
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> dp(n, vector<int>(n+1,-1));
+        return solver(0,-1,nums,n,dp);
+    }
+};
+
+//tabulation dp stores shifted index for prev
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<vector<int>> dp(n+1, vector<int>(n + 1, 0));
+        for (int index = n - 1; index >= 0; index--) {
+            for (int prev = index - 1; prev >= -1; prev--) {
+
+                int len = dp[index + 1][prev+1];
+                if (prev == -1 || nums[index] > nums[prev]) {
+                    len = max(len, 1 + dp[index + 1][index+1]);
+                }
+                dp[index][prev + 1] = len;
+            }
+        }
+        return dp[0][0];
+    }
+};
