@@ -1,0 +1,41 @@
+// Longest String Chain tabulation using dp[n] re lcs at n
+
+bool comp(string &s, string &t){
+        return s.size() < t.size();
+    }
+class Solution {
+public:
+    bool isPossible(string &s, string &t){
+        if(s.size() != 1 + t.size())
+            return false;
+        int i=0,j=0;
+        while(i<s.size()){
+            if(s[i] == t[j]){
+                i++; j++;
+            }
+            else{
+                i++;
+            }
+        }
+        if(i==s.size() && j==t.size()){
+            return true;
+        }
+        return false;
+    }
+    
+    int longestStrChain(vector<string>& words) {
+        int n = words.size();
+        sort(words.begin(),words.end(),comp);
+        vector<int> dp(n,1);
+        int maxLen = 1;
+        for(int ind=1;ind<n;ind++){
+            for(int prev=0;prev<ind;prev++){
+                if(isPossible(words[ind], words[prev]) && dp[ind]<1 + dp[prev]){
+                    dp[ind] = 1 + dp[prev];
+                }
+            }
+            maxLen = max(maxLen, dp[ind]);
+        }
+        return maxLen;
+    }
+};
