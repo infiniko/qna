@@ -1,0 +1,36 @@
+//Largest Divisible Subset
+class Solution {
+public:
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> dp(n,1);
+        vector<int> hash(n,0);
+        int finalIndex = 0, maxVal = 1;
+        sort(nums.begin(),nums.end());
+        for(int i=0;i<n;i++){
+            hash[i] = i;
+            for(int prev=0;prev<i;prev++){
+                if(nums[i]%nums[prev]==0){
+                    if(1+dp[prev]>dp[i]){
+                        dp[i] = 1 + dp[prev];
+                        hash[i] = prev; 
+                    }
+                }
+            }
+            if(maxVal<dp[i]){
+                maxVal = dp[i];
+                finalIndex = i;
+            }
+        }
+
+        vector<int> answer;
+        answer.push_back(nums[finalIndex]);
+        while(hash[finalIndex] != finalIndex){
+            finalIndex = hash[finalIndex];
+            answer.push_back(nums[finalIndex]);
+        }
+        reverse(answer.begin(),answer.end());
+        return answer;
+        
+    }
+};
