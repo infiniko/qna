@@ -1,0 +1,30 @@
+class Solution {
+  public:
+    int LongestBitonicSequence(int n, vector<int> &nums) {
+        // code here
+        vector<int> dpf(n,1), dpb(n,1);
+        int maxLen = 0;
+        for(int ind=1;ind<n;ind++){
+            for(int prev=0;prev<ind;prev++){
+                if(nums[ind]>nums[prev]){
+                    dpf[ind] = max(dpf[ind],1+dpf[prev]);
+                }
+            }
+        }
+        
+        for(int ind=n-2;ind>=0;ind--){
+            for(int prev=n-1;prev>ind;prev--){
+                if(nums[ind]>nums[prev]){
+                    dpb[ind] = max(dpb[ind],1+dpb[prev]);
+                }
+            }
+        }
+        
+        for(int i=0;i<n;i++){
+            if(dpf[i]>1 && dpb[i]>1){
+                 maxLen = max(maxLen, dpf[i]+dpb[i]-1);
+            }
+        }
+        return maxLen;
+    }
+};
