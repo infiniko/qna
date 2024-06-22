@@ -1,0 +1,29 @@
+class Solution {
+public
+    int minCostFinder(int i, int j, vectorint& cuts,vectorvectorint& dp) {
+
+        if (i  j)
+            return 0;
+
+        if (dp[i][j] != -1) {
+            return dp[i][j];
+        }
+
+        int minCost = 1e9;
+        for (int k = i; k = j; k++) {
+            int cost = cuts[j + 1] - cuts[i - 1] +
+                       minCostFinder(i, k - 1, cuts, dp) +
+                       minCostFinder(k + 1, j, cuts, dp);
+            minCost = min(minCost, cost);
+        }
+        return dp[i][j] = minCost;
+    }
+    int minCost(int n, vectorint& cuts) {
+        int c = cuts.size();
+        vectorvectorint dp(c + 1, vectorint(c + 1, -1));
+        cuts.push_back(n);
+        cuts.insert(cuts.begin(), 0);
+        sort(cuts.begin(), cuts.end());
+        return minCostFinder(1,c,cuts,dp);
+    }
+};
