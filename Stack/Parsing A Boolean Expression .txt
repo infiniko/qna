@@ -1,0 +1,72 @@
+//Parsing A Boolean Expression
+
+class Solution {
+public:
+    bool parse_and(vector<bool> &operands){
+        for( bool b : operands){
+            if(b==false){
+                return false;
+            }
+        }
+        return true;
+    }
+    bool parse_or(vector<bool> &operands){
+        for( bool b : operands){
+            if(b==true){
+                return true;
+            }
+        }
+        return false;
+    }
+    bool parse_not(vector<bool> &operands){
+        return !operands[0];
+    }
+
+    bool foperation(char op, vector<bool> &operands){
+
+        if(op == '&'){
+            return parse_and(operands);
+        }
+        else if(op == '|'){
+            return parse_or(operands);
+        }
+        else{
+            return parse_not(operands);
+        }
+    }
+
+    bool parseBoolExpr(string exp) {
+        
+        int n = exp.size();
+        stack<char> st;
+        for(int i=0;i<n;i++){
+            if(exp[i] == ',') continue;
+
+            if(exp[i] == ')'){
+                
+                vector<bool> temp;
+                while(st.top() != '&' && st.top() != '|' && st.top() != '!'){
+                    
+                    char c = st.top();
+                    st.pop();
+                    if(c=='t') temp.push_back(true);
+                    if(c=='f') temp.push_back(false);
+
+                }
+                char op = st.top();
+                st.pop();
+                if(foperation(op,temp)){
+                    st.push('t');
+                }
+                else{
+                    st.push('f');
+                }
+
+            }
+            else{
+                st.push(exp[i]);
+            }
+        }
+        return (st.top()=='t');
+    }
+};
