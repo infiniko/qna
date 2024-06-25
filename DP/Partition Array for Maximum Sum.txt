@@ -1,0 +1,30 @@
+// Partition Array for Maximum Sum
+//memorization
+
+class Solution {
+public:
+    int solver(int i, int n, vector<int>& arr, int k, vector<int>& dp) {
+
+        if (i == n) {
+            return 0;
+        }
+        if (dp[i] != -1) {
+            return dp[i];
+        }
+        int maxSum = INT_MIN;
+        int large = INT_MIN;
+        int len = 0;
+        for (int z = i; z < min(n, i + k); z++) {
+            len++;
+            large = max(large, arr[z]);
+            int sum = (large * len) + solver(z + 1, n, arr, k, dp);
+            maxSum = max(maxSum, sum);
+        }
+        return dp[i] = maxSum;
+    }
+    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+        int n = arr.size();
+        vector<int> dp(n, -1);
+        return solver(0, n, arr, k, dp);
+    }
+};
