@@ -28,3 +28,30 @@ public:
         return solver(0, n, arr, k, dp);
     }
 };
+
+
+//tabulation
+
+class Solution {
+public:
+    int maxSumAfterPartitioning(vector<int>& arr, int k) {
+        int n = arr.size();
+        vector<int> dp(n + 1, 0);
+        dp[n] = 0;
+        for (int ind = n - 1; ind >= 0; ind--) {
+
+            int maxSum = INT_MIN;
+            int large = INT_MIN;
+            int len = 0;
+            
+            for (int z = ind; z < min(n, ind + k); z++) {
+                len++;
+                large = max(large, arr[z]);
+                int sum = (large * len) + dp[z + 1];
+                maxSum = max(maxSum, sum);
+            }
+            dp[ind] = maxSum;
+        }
+        return dp[0];
+    }
+};
