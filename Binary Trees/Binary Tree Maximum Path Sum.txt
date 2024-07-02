@@ -1,0 +1,19 @@
+// Binary Tree Maximum Path Sum
+// modification in height one -- chooses one path
+
+class Solution {
+public:
+    int solver(TreeNode* root, int &maxPath){
+        if(!root) return 0;
+        int lp = max(0, solver(root->left,maxPath));
+        int rp = max(0, solver(root->right,maxPath));
+        maxPath = max(maxPath, root->val + lp + rp);
+
+        return root->val + max(lp,rp);
+    }
+    int maxPathSum(TreeNode* root) {
+        int maxPath = INT_MIN;
+        solver(root,maxPath);
+        return maxPath;
+    }
+};
