@@ -1,0 +1,34 @@
+// store nodes in map with x, y mapping & nodes stored in multiset
+class Solution {
+public:
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+        
+        map<int, map<int,multiset<int>>> nodes;
+        queue<pair<TreeNode*,pair<int,int>>> mq;
+        mq.push({root,{0,0}});
+        while(!mq.empty()){
+
+            auto temp = mq.front();
+            mq.pop();
+            TreeNode* node = temp.first;
+            int x = temp.second.first, y = temp.second.second;
+            nodes[x][y].insert(node->val);
+            if(node->left){
+                mq.push({node->left, {x-1,y+1}});
+            }
+            if(node->right){
+                mq.push({node->right, {x+1,y+1}});
+            }
+        }
+
+        vector<vector<int>> sol;
+        for(auto p : nodes){
+            vector<int> col;
+            for(auto q : p.second){
+                col.insert(col.end(),q.second.begin(),q.second.end());
+            }
+            sol.push_back(col);
+        }
+        return sol;
+    }
+};
