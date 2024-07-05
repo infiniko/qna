@@ -1,0 +1,31 @@
+class Solution
+{
+    public:
+    
+    vector<int> topView(Node *root)
+    {
+        //Your code here
+        map<int,int> mp;
+        queue<pair<Node*,int>> mq;
+        mq.push({root,0});
+        while(!mq.empty()){
+            auto entity = mq.front();
+            mq.pop();
+            Node* node = entity.first;
+            int x = entity.second;
+            if(mp.find(x)==mp.end()){
+                mp[x] = node->data;
+            }
+            
+            if(node->left) mq.push({node->left, x-1});
+            if(node->right) mq.push({node->right, x+1});
+        }
+        
+        vector<int> ans;
+        for(auto m : mp){
+            ans.push_back(m.second);
+        }
+        return ans;
+    }
+
+};
