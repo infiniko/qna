@@ -1,0 +1,32 @@
+// Count Complete Tree Nodes less than o(n) tc
+
+
+class Solution {
+public:
+    int countRightHeight(TreeNode* root){
+        int h = 0;
+        while(root){
+            root=root->right;
+            h++;
+        }
+        return h;
+    }
+    int countLeftHeight(TreeNode* root){
+        int h = 0;
+        while(root){
+            root=root->left;
+            h++;
+        }
+        return h;
+    }
+    int countNodes(TreeNode* root) {
+        if(!root) return 0;
+
+        int lh = countLeftHeight(root);
+        int rh = countRightHeight(root);
+
+        if(lh==rh) return (1<<lh) -1;
+        
+        return 1 + countNodes(root->left) + countNodes(root->right);
+    }
+};
