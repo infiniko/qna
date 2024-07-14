@@ -1,0 +1,30 @@
+// preorder..one line  change from inorder..while create link push node
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> preorder;
+        TreeNode* curr = root;
+        while(curr){
+            if(curr->left==NULL){
+                preorder.push_back(curr->val);
+                curr=curr->right;
+            }
+            else{
+                TreeNode* join = curr->left;
+                while(join->right && join->right!=curr){
+                    join=join->right;
+                }
+                if(join->right==NULL){
+                    join->right=curr;
+                    preorder.push_back(curr->val);
+                    curr=curr->left;
+                }
+                else{
+                    join->right=NULL;
+                    curr=curr->right;
+                }
+            }
+        }
+        return preorder;
+    }
+};
