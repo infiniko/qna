@@ -19,3 +19,43 @@ public:
         return klargest;
     }
 };
+
+
+
+// morris traversal
+// traverse whole tree.. dont break in between if some links remain
+
+class Solution {
+public:
+    int kthSmallest(TreeNode* root, int k) {
+        int counter = 0;
+        int klarge = 0;
+        TreeNode* curr = root;
+        while (curr) {
+            if (curr->left == NULL) {
+                counter++;
+                if (counter == k) {
+                    klarge = curr->val; 
+                }
+                curr = curr->right;
+            } else {
+                TreeNode* join = curr->left;
+                while (join->right && join->right != curr) {
+                    join = join->right;
+                }
+                if (join->right == NULL) {
+                    join->right = curr;
+                    curr = curr->left;
+                } else {
+                    counter++;
+                    join->right = NULL;
+                    if (counter == k) {
+                        klarge = curr->val; 
+                    }
+                    curr = curr->right;
+                }
+            }
+        }
+        return klarge;
+    }
+};
