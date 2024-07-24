@@ -1,1 +1,54 @@
 // Two Sum IV - Input is a BST
+
+
+class BSTiternator{
+    stack<TreeNode*> st;
+    bool isReversed;
+
+    public:
+    BSTiternator(TreeNode* root, bool isR){
+        isReversed = isR;
+        pushAll(root);
+    }
+    int next(){
+        TreeNode* temp = st.top();
+        st.pop();
+        if(isReversed){
+            pushAll(temp->left);
+        }
+        else{
+            pushAll(temp->right);
+        }
+        return temp->val;
+    }
+    private:
+    void pushAll(TreeNode* root){
+        while(root){
+            st.push(root);
+            if(!isReversed){
+                root = root->left;
+            }
+            else{
+                root = root->right;
+            }
+        }
+    }
+};
+
+class Solution {
+public:
+    bool findTarget(TreeNode* root, int k) {
+        if(!root) return false;
+        BSTiternator l(root,false);
+        BSTiternator r(root,true);
+        
+        int left = l.next();
+        int right = r.next();
+        while(left<right){
+            if(left+right==k) return true;
+            else if(left+right<k) left=l.next();
+            else right = r.next();
+        }
+        return false;
+    }
+};
