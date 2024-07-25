@@ -1,0 +1,27 @@
+// Recover Binary Search Tree
+// use inorder and take 2 var to track first and sec occurances along with prev value
+
+class Solution {
+public:
+    TreeNode* first , *second;
+    TreeNode* prev = new TreeNode(INT_MIN);
+    void inorder(TreeNode* root){
+        if(!root) return;
+        inorder(root->left);
+        
+        if(first==NULL && prev->val > root->val){
+            first=prev;
+        }
+	// in the first iteration .. 2 things are done
+        if(first!=NULL && prev->val > root->val){
+            second = root;
+        }
+        prev=root;
+        inorder(root->right);
+    }
+    void recoverTree(TreeNode* root) {
+        first = second = NULL;
+        inorder(root);
+        if(first && second) swap(first->val,second->val);
+    }
+};
