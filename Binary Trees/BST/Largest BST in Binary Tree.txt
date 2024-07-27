@@ -1,1 +1,31 @@
 // Largest BST in Binary Tree
+
+class NodeValue {
+    public:
+    int maxNode,minNode, maxSize;
+    NodeValue(int minNode,int maxNode, int maxSize){
+        this->minNode = minNode;
+        this->maxNode = maxNode;
+        this->maxSize = maxSize;
+    }
+};
+class Solution{
+    public:
+    NodeValue postorder(Node* root){
+        if(!root) return NodeValue(INT_MAX,INT_MIN,0);
+        
+        auto l = postorder(root->left);
+        auto r = postorder(root->right);
+        
+        if(l.maxNode < root->data && root->data < r.minNode){
+            return NodeValue(min(l.minNode,root->data), max(r.maxNode,root->data), l.maxSize+r.maxSize+1);
+        }
+        
+        return NodeValue(INT_MIN,INT_MAX, max(l.maxSize,r.maxSize));
+    }
+    int largestBst(Node *root)
+    {
+    	return postorder(root).maxSize;
+    	
+    }
+};
