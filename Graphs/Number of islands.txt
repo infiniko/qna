@@ -1,7 +1,34 @@
 // Number of islands
 
-int numProvinces(vector<vector<int>> &grid, int V) {
-        // code here
+class Solution {
+  public:
+    void bfs(int row, int col, vector<vector<int>> &grid, vector<vector<int>> &vis){
+        
+        vis[row][col] = 1;
+        queue<pair<int,int>> q;
+        q.push({row,col});
+        int n = grid.size();
+        int m = grid[0].size();
+        
+        while(!q.empty()){
+            int r = q.top().first;
+            int c = q.top().second;
+            q.pop();
+            
+            for(int d1 = -1 ; d1<=1;d1++){
+                for(int d2= -1;d2<=1;d2++){
+                    
+                    int nrow =  r + d1;
+                    int ncol = c + d2;
+                    if(nrow >= 0 && nrow < n && ncol>=0 && ncol<m && !vis[nrow][ncol] && grid[nrow][ncol] == 1){
+                        vis[nrow][ncol] = 1;
+                        q.push({nrow,ncol});
+                    }
+                }
+            }
+        }
+    }
+    int numOfIslands(vector<vector<int>> &grid) {
         int n = grid.size();
         int m = grid[0].size();
         vector<vector<int>> vis(n,vector<int>(m,0));
@@ -9,7 +36,12 @@ int numProvinces(vector<vector<int>> &grid, int V) {
         
         for(int row=0;row<n;row++){
             for(int col = 0;col<n;col++ ){
-                count++;
+                if(!vis[row][col]){
+                    count++;
+                    bfs(row,col,grid,vis);
+                }
+                
             }
         }
     }
+};
