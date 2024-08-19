@@ -3,14 +3,18 @@
 class Solution {
 public:
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
-        int n=imag
+        int n=image.size();
+        int m = image[0].size();
         queue<pair<int,int>> q;
-        q.push(sr,sc);
+        q.push({sr,sc});
 
-        while(!q.emty()){
+        while(!q.empty()){
             int x = q.front().first;
             int y = q.front().second;
             q.pop();
+
+            int cx[] = {0,-1,0,1};
+            int cy[] = {1,0,-1,0};
         }
     }
-};
+};s
