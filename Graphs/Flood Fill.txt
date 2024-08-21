@@ -1,20 +1,31 @@
-// Flood Fill
-
+// flood fill 
+// without visited array - remember if condition
 class Solution {
 public:
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
         int n=image.size();
         int m = image[0].size();
+        int orgColor = image[sr][sc];
+        image[sr][sc] = color;
         queue<pair<int,int>> q;
         q.push({sr,sc});
-
         while(!q.empty()){
             int x = q.front().first;
             int y = q.front().second;
             q.pop();
 
-            int cx[] = {0,-1,0,1};
-            int cy[] = {1,0,-1,0};
+            int dx[] = {0,-1,0,1};
+            int dy[] = {1,0,-1,0};
+
+            for(int i=0;i<4;i++){
+                    int cx = x + dx[i];
+                    int cy = y + dy[i];
+                    if(cx >=0 && cx<n && cy>=0 && cy<m && image[cx][cy] == orgColor && image[cx][cy] !=color){
+                        image[cx][cy] = color;
+                        q.push({cx,cy});
+                    }  
+            }
         }
+        return image;
     }
-};s
+};
