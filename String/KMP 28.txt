@@ -1,0 +1,58 @@
+class Solution {
+public:
+	// find lps first for substring
+    void findLps(string str, vector<int> &lps){
+        int n= str.size();
+        int it=1,prev=0;
+        lps[0]=0;
+
+        while(it<n){
+
+            if(str[it]== str[prev]){
+                lps[it] = prev+1;
+                it++; prev++;
+            }
+            else{
+                if(prev==0){
+                    lps[it] = 0;
+                    it++;
+                }
+                else{
+                    prev= lps[prev-1];
+                }
+            }
+        }
+    }
+    int strStr(string haystack, string needle) {
+        
+        int m = haystack.size();
+        int n = needle.size();
+        vector<int> lps(n,0);
+        findLps(needle, lps);
+
+        int i=0,j=0;
+	
+
+	//similar logic
+        while(i<m){
+
+            if(haystack[i]==needle[j]){
+                i++; j++;
+            }
+            else{
+                if(j==0){
+                    i++;
+                }
+                else{
+                    j=lps[j-1];
+                }
+            }
+            if(j==n){
+                return i-n;
+            }
+        }
+
+        return -1;
+
+    }
+};
