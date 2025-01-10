@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<string> wordSubsets(vector<string>& words1, vector<string>& words2) {
+
+	// max freq and norm freq strorage
+        vector<int> maxFreq(26,0);
+        vector<string> sol;
+
+        for(string word : words2){
+            vector<int> freq(26,0);
+	// calc freq for each word
+            for(char ch: word){
+                freq[ch-'a']++;
+            }
+	// compare with max freq
+            for(int i=0;i<26;i++){
+                maxFreq[i] = max(maxFreq[i], freq[i]);
+            }
+        }
+
+        for(string word: words1){
+            vector<int> freq(26,0);
+
+            for(char ch: word){
+                freq[ch-'a']++;
+            }
+            int i;
+	// freq for bigger words should be high otherwise no
+            for(i=0;i<26;i++){
+                if(freq[i]<maxFreq[i]){
+                    break;
+                }
+            }
+            if(i==26){
+                sol.push_back(word);
+            }
+        }
+
+        return sol;
+    }
+};
